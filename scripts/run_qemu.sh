@@ -12,6 +12,6 @@ qemu-system-x86_64 \
   -nographic \
   -netdev user,id=net0,hostfwd=tcp::2222-:22 \
   -device virtio-net-pci,netdev=net0 \
-  -fsdev local,id=fsdev0,path="$SHARE_DIR",security_model=passthrough \
+  -fsdev local,id=fsdev0,path="$SHARE_DIR",security_model=mapped \
   -device virtio-9p-pci,fsdev=fsdev0,mount_tag=hostshare
 

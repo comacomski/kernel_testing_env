@@ -5,11 +5,12 @@
 #
 # License: GPLv2
 
-OUT_DIR="/mnt/hostshare"
+release="$(uname -r)"
+OUT_DIR="/mnt/hostshare/logs/${release}"
+
+mkdir -p "${OUT_DIR}"
 
 echo "Generating dmesg logs!"
-
-release="$(uname -r)"
 
 dmesg -t -l emerg > $OUT_DIR/$release.dmesg_emerg
 dmesg -t -l crit > $OUT_DIR/$release.dmesg_crit

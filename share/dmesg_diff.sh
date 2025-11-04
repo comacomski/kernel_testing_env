@@ -2,63 +2,63 @@
 #
 #SPDX-License-Identifier: GPL-2.0
 # Copyright(c) Shuah Khan <skhan@linuxfoundation.org>
+# Copyright(c) Mico Antonic <coma.comski@gmail.com>
 #
+# Modified version: Reworked for comparing already existing dmesg logs from 2 kernel versions
 # License: GPLv2​
 
-OUT_DIR="/mnt/hostshare"
-
-if [ "$1" == "" ]; then
-    echo "$0 " <old name -r>
-    exit -1
+if [ -z "$1" ] || [ -z "$2" ]; then
+    echo "Usage: $0 v1 v2"
+    echo "Example: $0 5.15.195 5.15.196"
+    exit 1
 fi
 
-release=`uname -r`
-echo "Start dmesg regression check for $release" > $OUT_DIR/dmesg_checks_results
+V1="$1"
+V2="$2"
+LOGS_DIR="/mnt/hostshare/logs"
+OUT_FILE="${LOGS_DIR}/${V1}_vs_${V2}"
 
-echo "--------------------------" >> $OUT_DIR/dmesg_checks_results
+mkdir -p "${LOGS_DIR}"
 
-dmesg -t -l emerg > $OUT_DIR/$release.dmesg_emerg
-echo "dmesg emergency regressions" >> $OUT_DIR/dmesg_checks_results
-echo "--------------------------" >> $OUT_DIR/dmesg_checks_results
-diff $OUT_DIR/$1.dmesg_emerg $OUT_DIR/$release.dmesg_emerg >> $OUT_DIR/dmesg_checks_results
-echo "--------------------------" >> dmesg_checks_results
+echo "Start diff check for $V1 and $V2" > $OUT_FILE
 
-dmesg -t -l crit > $OUT_DIR/$release.dmesg_crit
-echo "dmesg critical regressions" >> $OUT_DIR/dmesg_checks_results
-echo "--------------------------" >> $OUT_DIR/dmesg_checks_results
-diff $OUT_DIR/$1.dmesg_crit $OUT_DIR/$release.dmesg_crit >> $OUT_DIR/dmesg_checks_results 
-echo "--------------------------" >> $OUT_DIR/dmesg_checks_results
+echo "--------------------------" >> $OUT_FILE
 
-dmesg -t -l alert > $OUT_DIR/$release.dmesg_alert
-echo "dmesg alert regressions" >> $OUT_DIR/dmesg_checks_results
-echo "--------------------------" >> $OUT_DIR/dmesg_checks_results
-diff $OUT_DIR/$1.dmesg_alert $OUT_DIR/$release.dmesg_alert >> $OUT_DIR/dmesg_checks_results
-echo "--------------------------" >> $OUT_DIR/dmesg_checks_results
+echo "dmesg emergency regressions" >> $OUT_FILE
+echo "--------------------------" >> $OUT_FILE
+diff $OUT_DIR/$1/$1.dmesg_emerg $OUT_DIR/$2/$2.dmesg_emerg >> $OUT_FILE
+echo "--------------------------" >> $OUT_FILE
 
-dmesg -t -l err > $OUT_DIR/$release.dmesg_err
-echo "dmesg err regressions" >> $OUT_DIR/dmesg_checks_results
-echo "--------------------------" >> $OUT_DIR/dmesg_checks_results
-diff $OUT_DIR/$1.dmesg_err $OUT_DIR/$release.dmesg_err >> $OUT_DIR/dmesg_checks_results
-echo "--------------------------" >> $OUT_DIR/dmesg_checks_results
+echo "dmesg critical regressions" >> $OUT_FILE
+echo "--------------------------" >> $OUT_FILE
+diff $OUT_DIR/$1/$1.dmesg_crit $OUT_DIR/$2/$2.dmesg_crit >> $OUT_FILE
+echo "--------------------------" >> $OUT_FILE
 
-dmesg -t -l warn > $OUT_DIR/$release.dmesg_warn
-echo "dmesg warn regressions" >> $OUT_DIR/dmesg_checks_results
-echo "--------------------------" >> $OUT_DIR/dmesg_checks_results
-diff $OUT_DIR/$1.dmesg_warn $OUT_DIR/$release.dmesg_warn >> $OUT_DIR/dmesg_checks_results
-echo "--------------------------" >> $OUT_DIR/dmesg_checks_results
+echo "dmesg alert regressions" >> $OUT_FILE
+echo "--------------------------" >> $OUT_FILE
+diff $OUT_DIR/$1/$1.dmesg_alert $OUT_DIR/$2/$2.dmesg_alert >> $OUT_FILE
+echo "--------------------------" >> $OUT_FILE
 
-dmesg -t > $OUT_DIR/$release.dmesg
-echo "dmesg regressions" >> $OUT_DIR/dmesg_checks_results
-echo "--------------------------" >> $OUT_DIR/dmesg_checks_results
-diff $OUT_DIR/$1.dmesg $OUT_DIR/$release.dmesg >> $OUT_DIR/dmesg_checks_results
-echo "--------------------------" >> $OUT_DIR/dmesg_checks_results
+echo "dmesg err regressions" >> $OUT_FILE
+echo "--------------------------" >> $OUT_FILE
+diff $OUT_DIR/$1/$1.dmesg_err $OUT_DIR/$2/$2.dmesg_err >> $OUT_FILE
+echo "--------------------------" >> $OUT_FILE
 
-dmesg -t -k > $OUT_DIR/$release.dmesg_kern
-echo "dmesg_kern regressions" >> $OUT_DIR/dmesg_checks_results
-echo "--------------------------" >> $OUT_DIR/dmesg_checks_results
-diff $OUT_DIR/$1.dmesg_kern $OUT_DIR/$release.dmesg_kern >> $OUT_DIR/dmesg_checks_results
-echo "--------------------------" >> $OUT_DIR/dmesg_checks_results
+echo "dmesg warn regressions" >> $OUT_FILE
+echo "--------------------------" >> $OUT_FILE
+diff $OUT_DIR/$1/$1.dmesg_warn $OUT_DIR/$2/$2.dmesg_warn >> $OUT_FILE
+echo "--------------------------" >> $OUT_FILE
 
-echo "--------------------------" >> $OUT_DIR/dmesg_checks_results
+echo "dmesg regressions" >> $OUT_FILE
+echo "--------------------------" >> $OUT_FILE
+diff $OUT_DIR/$1/$1.dmesg $OUT_DIR/$2/$2.dmesg >> $OUT_FILE
+echo "--------------------------" >> $OUT_FILE
 
-echo "End dmesg regression check for $release" >> $OUT_DIR/dmesg_checks_results
+echo "dmesg_kern regressions" >> $OUT_FILE
+echo "--------------------------" >> $OUT_FILE
+diff $OUT_DIR/$1/$1.dmesg_kern $OUT_DIR/$2/$2.dmesg_kern >> $OUT_FILE
+echo "--------------------------" >> $OUT_FILE
+
+echo "--------------------------" >> $OUT_FILE
+
+echo "End diff check for $V1 and $V2" >> $OUT_FILE

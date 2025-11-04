@@ -1,3 +1,5 @@
 linux_mainline/
 linux_stable/
+share/logs/
+out/
 
