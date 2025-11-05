@@ -10,6 +10,8 @@ if [ -z "$stable" ]; then
 fi
 
 cd "$STABLE_DIR"
+git reset --hard
+git clean -fdx
 git fetch origin
 git checkout -b stable-$stable origin/linux-$stable.y
 

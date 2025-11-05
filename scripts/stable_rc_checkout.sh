@@ -9,5 +9,7 @@ if [ -z "$rc" ]; then
 fi
 
 cd "$STABLE_DIR"
+git reset --hard
+git clean -fdx
 git fetch stable-rc
 git checkout -b stable-rc-$rc stable-rc/linux-$rc.y

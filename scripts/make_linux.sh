@@ -14,6 +14,9 @@ function usage
 	exit 1
 }
 
+if [ -f "$2" ]; then
+	CONFIG_FILE="$(realpath $2)"
+fi
 
 if [ "$1" == "stable" ]; then
 	cd "$LINUX_STABLE" || exit 2
@@ -27,8 +30,8 @@ fi
 variant=$1
 shift
 
-if [[ -f "$1" ]]; then
-	cp $1 ./.config
+if [ ! -z "$CONFIG_FILE" ]; then
+	cp ${CONFIG_FILE} ./.config
 	make olddefconfig
 	echo "$1 copied to $(realpath .config)"
 elif [ "$1" == "menuconfig" ]; then
