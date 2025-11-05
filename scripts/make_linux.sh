@@ -3,7 +3,7 @@
 LINUX_STABLE="$(realpath "$(dirname "$0")")/../linux_stable"
 LINUX_MAINLINE="$(realpath "$(dirname "$0")")/../linux_mainline"
 LINUX=""
-OUT_DIR="../out"
+OUT_DIR="$(realpath "$(dirname "$0")")/../out"
 
 set -e
 
@@ -51,6 +51,7 @@ if [ $err != 0 ]; then
 	exit $err
 fi
 
+mkdir -p "$OUT_DIR"
 cp "$LINUX/arch/x86/boot/bzImage" "$OUT_DIR/bzImage"
 cd ../
 $(realpath $(dirname $0))/run_qemu.sh
