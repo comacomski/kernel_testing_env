@@ -3,11 +3,18 @@
 IMG="$(realpath "$(dirname "$0")")/../qemu-rootfs/ubuntu-rootfs.img"
 KERNEL="$(realpath "$(dirname "$0")")/../out/bzImage"     # your compiled bzImage
 SHARE_DIR="$(realpath "$(dirname "$0")")/../share"
+CMDLINE_STRING=""
+
+if [ "${1}" == "-t" ]; then
+    CMDLINE_STRING="root=/dev/sda1 rw console=ttyS0 loglevel=3 testenv=true"
+else
+    CMDLINE_STRING="root=/dev/sda1 rw console=ttyS0 loglevel=3"
+fi
 
 qemu-system-x86_64 \
   -m 4G -smp 4 \
   -kernel "$KERNEL" \
-  -append "root=/dev/sda1 rw console=ttyS0 loglevel=3" \
+  -append "$CMDLINE_STRING" \
   -hda "$IMG" \
   -nographic \
   -netdev user,id=net0,hostfwd=tcp::2222-:22 \

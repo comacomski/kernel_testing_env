@@ -54,4 +54,6 @@ fi
 mkdir -p "$OUT_DIR"
 cp "$LINUX/arch/x86/boot/bzImage" "$OUT_DIR/bzImage"
 cd ../
-$(realpath $(dirname $0))/run_qemu.sh
+
+# qemu will not be run from here
+#$(realpath $(dirname $0))/run_qemu.sh
