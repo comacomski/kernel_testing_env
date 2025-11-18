@@ -51,7 +51,9 @@ if [ $err != 0 ]; then
 	exit $err
 fi
 
+echo "creating: ${OUT_DIR}"
 mkdir -p "$OUT_DIR"
+echo "copying: $LINUX/arch/x86/boot/bzImage to $OUT_DIR/bzImage"
 cp "$LINUX/arch/x86/boot/bzImage" "$OUT_DIR/bzImage"
 cd ../
 

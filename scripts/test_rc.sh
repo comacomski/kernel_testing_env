@@ -12,13 +12,18 @@ if [ -z "$1" ] || [ -z "$2" ]; then
 fi
 
 SCRIPTS_DIR="$(realpath $(dirname $0))"
+CONFIG_DIR="$(realpath $(dirname $0))/../configs"
+CONFIG=".config-qemu-x86-basic"
 
+echo "stable_stable checkout to $1"
 $SCRIPTS_DIR/stable_stable_checkout.sh $1
-$SCRIPTS_DIR/make_linux.sh stable ./configs/.config-qemu-x86-basic
+$SCRIPTS_DIR/make_linux.sh stable "${CONFIG_DIR}/${CONFIG}"
 $SCRIPTS_DIR/run_qemu.sh -t
 
+
+echo "stable_rc checkout to $2"
 $SCRIPTS_DIR/stable_rc_checkout.sh $2
-$SCRIPTS_DIR/make_linux.sh stable ./configs/.config-qemu-x86-basic
+$SCRIPTS_DIR/make_linux.sh stable "${CONFIG_DIR}/${CONFIG}"  
 $SCRIPTS_DIR/run_qemu.sh -t
 
 # run dmesg_diff.sh from host (need to find names of files to compare)

@@ -13,5 +13,7 @@ cd "$STABLE_DIR"
 git reset --hard
 git clean -fdx
 git fetch origin
+git checkout master
+git branch -D stable-$stable
 git checkout -b stable-$stable origin/linux-$stable.y
 
