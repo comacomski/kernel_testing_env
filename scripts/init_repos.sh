@@ -7,4 +7,7 @@ git clone git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git 
 cd $LINUX_STABLE
 git remote add stable-rc https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
 
+cd $LINUX_MAINLINE
+git clone https://github.com/torvalds/linux.git $LINUX_MAINLINE
+
 echo "Stable repo cloned, with origin and stable-rc remotes added."
