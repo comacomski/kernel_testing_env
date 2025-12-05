@@ -4,3 +4,4 @@ share/logs/
 out/
 driver_projects/*
 !driver_projects/.gitkeep
+share/*.ko
